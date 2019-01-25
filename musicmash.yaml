@@ -1,0 +1,96 @@
+defaults:
+    ssl: True
+
+tests:
+  - name: must redirect to ssl
+    ssl: False
+    GET: /api/objque@me/feed
+    status: 301
+    response_headers:
+      location: /^https/
+
+  - name: get user feed without ssl
+    ssl: False
+    redirects: True
+    GET: /api/objque@me/feed
+    response_headers:
+        content-type: application/json
+
+  - name: get unknown user feed without ssl
+    ssl: False
+    redirects: True
+    GET: /api/unknown@user/feed
+    status: 400
+
+  - name: get user feed
+    GET: /api/objque@me/feed
+    response_headers:
+        content-type: application/json
+
+  - name: get unknown user feed
+    GET: /api/unknown@user/feed
+    status: 400
+
+  - name: get user feed since first day of 2019 year
+    GET: /api/objque@me/feed
+    query_parameters:
+      since:
+          - "2019-01-01"
+    response_headers:
+        content-type: application/json
+    response_json_paths:
+      $.date: "2019-01-01T00:00:00Z"
+
+  - name: get unknown user feed since first day of 2019 year
+    GET: /api/unknown@user/feed
+    query_parameters:
+      since:
+          - "2019-01-01"
+    status: 400
+
+  - name: unsubscribe user from an artist
+    DELETE: /api/objque@me/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      - "skrillex"
+
+  - name: unsubscribe unknown user from an artist
+    DELETE: /api/unknown@user/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      - "skrillex"
+    status: 400
+
+  - name: subscribe user for an artist
+    skip: currently API freezes after 5 subscribe requests
+    POST: /api/objque@me/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      - "skrillex"
+    status: 202
+
+  - name: subscribe unknown user for an artist
+    POST: /api/unknown@user/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      - "skrillex"
+    status: 400
+
+  - name: search an artist
+    GET: /api/objque@me/artists
+    query_parameters:
+      name:
+          - "slipknot"
+    response_headers:
+        content-type: application/json
+
+  - name: search an artist from unknown user
+    GET: /api/unknown@user/artists
+    query_parameters:
+      name:
+          - "slipknot"
+    status: 400
