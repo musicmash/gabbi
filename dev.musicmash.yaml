@@ -1,10 +1,12 @@
 defaults:
     ssl: True
+    request_headers:
+      x-auth-token: 7bcb1e82-2bb8-11e9-a5ec-0242ac110006
 
 tests:
   - name: must redirect to ssl
     ssl: False
-    GET: /api/bot/feed
+    GET: /api/feed
     status: 301
     response_headers:
       location: /^https/
@@ -12,27 +14,33 @@ tests:
   - name: get user feed without ssl
     ssl: False
     redirects: True
-    GET: /api/bot/feed
+    GET: /api/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed without ssl
     ssl: False
     redirects: True
-    GET: /api/unknown@user/feed
-    status: 400
+    GET: /api/feed
+    request_headers:
+      content-type: application/json
+      x-auth-token: unknown-token
+    status: 401
 
   - name: get user feed
-    GET: /api/bot/feed
+    GET: /api/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed
-    GET: /api/unknown@user/feed
-    status: 400
+    GET: /api/feed
+    request_headers:
+      content-type: application/json
+      x-auth-token: unknown-token
+    status: 401
 
   - name: get user feed since first day of 2019 year
-    GET: /api/bot/feed
+    GET: /api/feed
     query_parameters:
       since:
           - "2019-01-01"
@@ -42,30 +50,34 @@ tests:
       $.date: "2019-01-01T00:00:00Z"
 
   - name: get unknown user feed since first day of 2019 year
-    GET: /api/unknown@user/feed
+    GET: /api/feed
+    request_headers:
+      content-type: application/json
+      x-auth-token: unknown-token
     query_parameters:
       since:
           - "2019-01-01"
-    status: 400
+    status: 401
 
   - name: unsubscribe user from an artist
-    DELETE: /api/bot/subscriptions
+    DELETE: /api/subscriptions
     request_headers:
         content-type: application/json
     data:
       - "skrillex"
 
   - name: unsubscribe unknown user from an artist
-    DELETE: /api/unknown@user/subscriptions
+    DELETE: /api/subscriptions
     request_headers:
-        content-type: application/json
+      content-type: application/json
+      x-auth-token: unknown-token
     data:
       - "skrillex"
-    status: 400
+    status: 401
 
   - name: subscribe user for an artist
     skip: currently API freezes after 5 subscribe requests
-    POST: /api/bot/subscriptions
+    POST: /api/subscriptions
     request_headers:
         content-type: application/json
     data:
@@ -73,15 +85,16 @@ tests:
     status: 202
 
   - name: subscribe unknown user for an artist
-    POST: /api/unknown@user/subscriptions
+    POST: /api/subscriptions
     request_headers:
         content-type: application/json
+        x-auth-token: unknown-token
     data:
       - "skrillex"
-    status: 400
+    status: 401
 
   - name: search an artist
-    GET: /api/bot/artists
+    GET: /api/artists
     query_parameters:
       name:
           - "slipknot"
@@ -89,8 +102,10 @@ tests:
         content-type: application/json
 
   - name: search an artist from unknown user
-    GET: /api/unknown@user/artists
+    GET: /api/artists
     query_parameters:
       name:
           - "slipknot"
-    status: 400
+    request_headers:
+      x-auth-token: unknown-token
+    status: 401
