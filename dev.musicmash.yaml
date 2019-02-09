@@ -109,3 +109,14 @@ tests:
     request_headers:
       x-auth-token: unknown-token
     status: 401
+
+  - name: show artist details
+    GET: /api/artists/rammstein
+    response_headers:
+        content-type: application/json
+
+  - name: show artist details from unknown user
+    GET: /api/artists/rammstein
+    request_headers:
+      x-auth-token: unknown-token
+    status: 401
