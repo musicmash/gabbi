@@ -1,7 +1,7 @@
 defaults:
     ssl: True
     request_headers:
-      x-auth-token: 7bcb1e82-2bb8-11e9-a5ec-0242ac110006
+      x-auth-token: $ENVIRON['MUSICMASH_DEV_TOKEN']
 
 tests:
   - name: must redirect to ssl
