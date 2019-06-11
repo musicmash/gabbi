@@ -6,41 +6,46 @@ defaults:
 tests:
   - name: must redirect to ssl
     ssl: False
-    GET: /api/feed
+    GET: /api/v1/feed
     status: 301
     response_headers:
       location: /^https/
 
   - name: get user feed without ssl
+    skip: currently this method not implemented
     ssl: False
     redirects: True
-    GET: /api/feed
+    GET: /api/v1/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed without ssl
+    skip: currently this method not implemented
     ssl: False
     redirects: True
-    GET: /api/feed
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
     status: 401
 
   - name: get user feed
-    GET: /api/feed
+    skip: currently this method not implemented
+    GET: /api/v1/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed
-    GET: /api/feed
+    skip: currently this method not implemented
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
     status: 401
 
   - name: get user feed since first day of 2019 year
-    GET: /api/feed
+    skip: currently this method not implemented
+    GET: /api/v1/feed
     query_parameters:
       since:
           - "2019-01-01"
@@ -50,7 +55,8 @@ tests:
       $.date: "2019-01-01T00:00:00Z"
 
   - name: get unknown user feed since first day of 2019 year
-    GET: /api/feed
+    skip: currently this method not implemented
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
@@ -59,50 +65,72 @@ tests:
           - "2019-01-01"
     status: 401
 
-  - name: unsubscribe user from an artist
-    DELETE: /api/subscriptions
-    request_headers:
-        content-type: application/json
-    data:
-      - "skrillex"
-
-  - name: unsubscribe unknown user from an artist
-    DELETE: /api/subscriptions
-    request_headers:
-      content-type: application/json
-      x-auth-token: unknown-token
-    data:
-      - "skrillex"
-    status: 401
-
-  - name: subscribe user for an artist
-    skip: currently API freezes after 5 subscribe requests
-    POST: /api/subscriptions
-    request_headers:
-        content-type: application/json
-    data:
-      - "skrillex"
-    status: 202
-
   - name: subscribe unknown user for an artist
-    POST: /api/subscriptions
+    POST: /api/v1/subscriptions
     request_headers:
         content-type: application/json
         x-auth-token: unknown-token
     data:
-      - "skrillex"
+      [69]
     status: 401
 
-  - name: search an artist
-    GET: /api/artists
+  - name: get unknown user subscriptions
+    GET: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+        x-auth-token: unknown-token
+    data:
+      [69]
+    status: 401
+
+  - name: unsubscribe unknown user from an artist
+    DELETE: /api/v1/subscriptions
+    request_headers:
+      content-type: application/json
+      x-auth-token: unknown-token
+    data:
+      [69]
+    status: 401
+
+  - name: subscribe user for an artist
+    POST: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      [69]
+
+  - name: get user subscriptions
+    GET: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    response_headers:
+        content-type: /application/json/
+    response_json_paths:
+      $.[0].artist_id: 69
+
+  - name: unsubscribe user from an artist
+    DELETE: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      [69]
+
+  - name: search 'rammstein' artist
+    GET: /api/v1/artists/search
     query_parameters:
       name:
-          - "slipknot"
+          - "rammstein"
     response_headers:
         content-type: application/json
+    response_json_paths:
+      $.[0].id: 503526
+      $.[0].name: "Rammstein"
+      $.[0].poster: "https://i.scdn.co/image/cdf344b2f5124d1f2f1217c45f12096730c70560"
+      $.[0].popularity: 87
+      $.[0].followers: 2881452
 
   - name: search an artist from unknown user
-    GET: /api/artists
+    GET: /api/v1/artists/search
     query_parameters:
       name:
           - "slipknot"
@@ -111,19 +139,21 @@ tests:
     status: 401
 
   - name: show artist details
-    GET: /api/artists/rammstein
+    skip: currently this method not implemented
+    GET: /api/v1/artists/rammstein
     response_headers:
         content-type: application/json
 
   - name: show artist details from unknown user
-    GET: /api/artists/rammstein
+    skip: currently this method not implemented
+    GET: /api/v1/artists/rammstein
     request_headers:
       x-auth-token: unknown-token
     status: 401
 
   - name: try to delete logout from unknown user
-    DELETE: /api/token
+    skip: currently this method not implemented
+    DELETE: /api/v1/token
     request_headers:
       x-auth-token: unknown-token
     status: 401
-
