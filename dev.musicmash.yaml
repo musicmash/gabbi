@@ -115,18 +115,22 @@ tests:
     data:
       [69]
 
-  - name: search an artist
-    skip: currently this method not implemented
-    GET: /api/v1/artists
+  - name: search 'rammstein' artist
+    GET: /api/v1/artists/search
     query_parameters:
       name:
-          - "slipknot"
+          - "rammstein"
     response_headers:
         content-type: application/json
+    response_json_paths:
+      $.[0].id: 281
+      $.[0].name: "Rammstein"
+      $.[0].poster: "https://i.scdn.co/image/cdf344b2f5124d1f2f1217c45f12096730c70560"
+      $.[0].popularity: 86
+      $.[0].followers: 2856045
 
   - name: search an artist from unknown user
-    skip: currently this method not implemented
-    GET: /api/v1/artists
+    GET: /api/v1/artists/search
     query_parameters:
       name:
           - "slipknot"
