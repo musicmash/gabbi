@@ -12,6 +12,7 @@ tests:
       location: /^https/
 
   - name: get user feed without ssl
+    skip: currently this method not implemented
     ssl: False
     redirects: True
     GET: /api/feed
@@ -19,6 +20,7 @@ tests:
         content-type: application/json
 
   - name: get unknown user feed without ssl
+    skip: currently this method not implemented
     ssl: False
     redirects: True
     GET: /api/feed
@@ -28,11 +30,13 @@ tests:
     status: 401
 
   - name: get user feed
+    skip: currently this method not implemented
     GET: /api/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed
+    skip: currently this method not implemented
     GET: /api/feed
     request_headers:
       content-type: application/json
@@ -40,6 +44,7 @@ tests:
     status: 401
 
   - name: get user feed since first day of 2019 year
+    skip: currently this method not implemented
     GET: /api/feed
     query_parameters:
       since:
@@ -50,6 +55,7 @@ tests:
       $.date: "2019-01-01T00:00:00Z"
 
   - name: get unknown user feed since first day of 2019 year
+    skip: currently this method not implemented
     GET: /api/feed
     request_headers:
       content-type: application/json
@@ -60,6 +66,7 @@ tests:
     status: 401
 
   - name: unsubscribe user from an artist
+    skip: currently this method not implemented
     DELETE: /api/subscriptions
     request_headers:
         content-type: application/json
@@ -67,6 +74,7 @@ tests:
       - "skrillex"
 
   - name: unsubscribe unknown user from an artist
+    skip: currently this method not implemented
     DELETE: /api/subscriptions
     request_headers:
       content-type: application/json
@@ -76,7 +84,7 @@ tests:
     status: 401
 
   - name: subscribe user for an artist
-    skip: currently API freezes after 5 subscribe requests
+    skip: currently this method not implemented
     POST: /api/subscriptions
     request_headers:
         content-type: application/json
@@ -85,6 +93,7 @@ tests:
     status: 202
 
   - name: subscribe unknown user for an artist
+    skip: currently this method not implemented
     POST: /api/subscriptions
     request_headers:
         content-type: application/json
@@ -94,6 +103,7 @@ tests:
     status: 401
 
   - name: search an artist
+    skip: currently this method not implemented
     GET: /api/artists
     query_parameters:
       name:
@@ -102,6 +112,7 @@ tests:
         content-type: application/json
 
   - name: search an artist from unknown user
+    skip: currently this method not implemented
     GET: /api/artists
     query_parameters:
       name:
@@ -111,17 +122,20 @@ tests:
     status: 401
 
   - name: show artist details
+    skip: currently this method not implemented
     GET: /api/artists/rammstein
     response_headers:
         content-type: application/json
 
   - name: show artist details from unknown user
+    skip: currently this method not implemented
     GET: /api/artists/rammstein
     request_headers:
       x-auth-token: unknown-token
     status: 401
 
   - name: try to delete logout from unknown user
+    skip: currently this method not implemented
     DELETE: /api/token
     request_headers:
       x-auth-token: unknown-token
