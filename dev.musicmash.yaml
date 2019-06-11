@@ -127,7 +127,7 @@ tests:
       $.[0].name: "Rammstein"
       $.[0].poster: "https://i.scdn.co/image/cdf344b2f5124d1f2f1217c45f12096730c70560"
       $.[0].popularity: 86
-      $.[0].followers: 2856045
+      $.[0].followers: 2881452
 
   - name: search an artist from unknown user
     GET: /api/v1/artists/search
