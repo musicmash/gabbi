@@ -6,7 +6,7 @@ defaults:
 tests:
   - name: must redirect to ssl
     ssl: False
-    GET: /api/feed
+    GET: /api/v1/feed
     status: 301
     response_headers:
       location: /^https/
@@ -15,7 +15,7 @@ tests:
     skip: currently this method not implemented
     ssl: False
     redirects: True
-    GET: /api/feed
+    GET: /api/v1/feed
     response_headers:
         content-type: application/json
 
@@ -23,7 +23,7 @@ tests:
     skip: currently this method not implemented
     ssl: False
     redirects: True
-    GET: /api/feed
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
@@ -31,13 +31,13 @@ tests:
 
   - name: get user feed
     skip: currently this method not implemented
-    GET: /api/feed
+    GET: /api/v1/feed
     response_headers:
         content-type: application/json
 
   - name: get unknown user feed
     skip: currently this method not implemented
-    GET: /api/feed
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
@@ -45,7 +45,7 @@ tests:
 
   - name: get user feed since first day of 2019 year
     skip: currently this method not implemented
-    GET: /api/feed
+    GET: /api/v1/feed
     query_parameters:
       since:
           - "2019-01-01"
@@ -56,7 +56,7 @@ tests:
 
   - name: get unknown user feed since first day of 2019 year
     skip: currently this method not implemented
-    GET: /api/feed
+    GET: /api/v1/feed
     request_headers:
       content-type: application/json
       x-auth-token: unknown-token
@@ -117,7 +117,7 @@ tests:
 
   - name: search an artist
     skip: currently this method not implemented
-    GET: /api/artists
+    GET: /api/v1/artists
     query_parameters:
       name:
           - "slipknot"
@@ -126,7 +126,7 @@ tests:
 
   - name: search an artist from unknown user
     skip: currently this method not implemented
-    GET: /api/artists
+    GET: /api/v1/artists
     query_parameters:
       name:
           - "slipknot"
@@ -136,20 +136,20 @@ tests:
 
   - name: show artist details
     skip: currently this method not implemented
-    GET: /api/artists/rammstein
+    GET: /api/v1/artists/rammstein
     response_headers:
         content-type: application/json
 
   - name: show artist details from unknown user
     skip: currently this method not implemented
-    GET: /api/artists/rammstein
+    GET: /api/v1/artists/rammstein
     request_headers:
       x-auth-token: unknown-token
     status: 401
 
   - name: try to delete logout from unknown user
     skip: currently this method not implemented
-    DELETE: /api/token
+    DELETE: /api/v1/token
     request_headers:
       x-auth-token: unknown-token
     status: 401
