@@ -65,42 +65,55 @@ tests:
           - "2019-01-01"
     status: 401
 
-  - name: unsubscribe user from an artist
-    skip: currently this method not implemented
-    DELETE: /api/subscriptions
-    request_headers:
-        content-type: application/json
-    data:
-      - "skrillex"
-
-  - name: unsubscribe unknown user from an artist
-    skip: currently this method not implemented
-    DELETE: /api/subscriptions
-    request_headers:
-      content-type: application/json
-      x-auth-token: unknown-token
-    data:
-      - "skrillex"
-    status: 401
-
-  - name: subscribe user for an artist
-    skip: currently this method not implemented
-    POST: /api/subscriptions
-    request_headers:
-        content-type: application/json
-    data:
-      - "skrillex"
-    status: 202
-
   - name: subscribe unknown user for an artist
-    skip: currently this method not implemented
-    POST: /api/subscriptions
+    POST: /api/v1/subscriptions
     request_headers:
         content-type: application/json
         x-auth-token: unknown-token
     data:
-      - "skrillex"
+      [69]
     status: 401
+
+  - name: get unknown user subscriptions
+    GET: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+        x-auth-token: unknown-token
+    data:
+      [69]
+    status: 401
+
+  - name: unsubscribe unknown user from an artist
+    DELETE: /api/v1/subscriptions
+    request_headers:
+      content-type: application/json
+      x-auth-token: unknown-token
+    data:
+      [69]
+    status: 401
+
+  - name: subscribe user for an artist
+    POST: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      [69]
+
+  - name: get user subscriptions
+    GET: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    response_headers:
+        content-type: /application/json/
+    response_json_paths:
+      $.[0].artist_id: 69
+
+  - name: unsubscribe user from an artist
+    DELETE: /api/v1/subscriptions
+    request_headers:
+        content-type: application/json
+    data:
+      [69]
 
   - name: search an artist
     skip: currently this method not implemented
