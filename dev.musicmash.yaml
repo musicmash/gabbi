@@ -106,7 +106,11 @@ tests:
     response_headers:
         content-type: /application/json/
     response_json_paths:
-      $.[0].artist_id: 69
+      $.[0].poster: "https://i.scdn.co/image/734b28f0dc9768fe74b77091f1f2a448bb57557a"
+      $.[0].popularity: 0
+      $.[0].followers: 0
+      $.[0].id: 69
+      $.[0].name: "SOA ORBITAL ARCHITECTS"
 
   - name: unsubscribe user from an artist
     DELETE: /api/v1/subscriptions
